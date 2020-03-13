@@ -8,7 +8,7 @@ namespace Corporate.Data.Context
 {
     public interface IAsyncRepository<T> where T : class
     {
-        Task<PagedList<T>> GetPagedAsync();
+        Task<PagedList<T>> GetPagedAsync(int pageNumber,int pageSize);
         Task<T> FindAsyncById(int id);
         Task<T> AddAsync(T tEntity);
         Task UpdateAsync(T tEntity);

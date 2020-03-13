@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Corporate.Domain.Entities
+namespace Corporate.Model.Dtoes
 {
-    public class Language
+    public class LanguageDto : BaseDto
     {
-        public int Id { get; set; }
+        [MaxLength(6)]
         public string Culture { get; set; }
         public bool Rtl { get; set; }
+        [MaxLength(30)]
         public string Name { get; set; }
         public bool Default { get; set; }
+        [MaxLength(8)]
         public string SEOName { get; set; }
         public int DisplayOrder { get; set; }
-        
     }
 }

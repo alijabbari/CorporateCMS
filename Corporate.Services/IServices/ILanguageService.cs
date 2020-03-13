@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace Corporate.Services.IServices
 {
-    public interface ICategoryService :IAsyncRepository<Category>
+    public interface ILanguageService :IAsyncRepository<Language>
     {
 
-        //Task<PagedList<Category>> GetTopMenuCategories();
-
+        
     }
 }

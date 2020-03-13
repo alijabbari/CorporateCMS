@@ -6,6 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200306120924_AddLanguage.cs" />
+    <Compile Remove="Migrations\20200306120924_AddLanguage.Designer.cs" />
+    <Compile Remove="Migrations\20200313191623_addLanguagAndConfig.cs" />
+    <Compile Remove="Migrations\20200313191623_addLanguagAndConfig.Designer.cs" />
+    <Compile Remove="Migrations\20200313192939_addLanguagAndLanguagConfig.cs" />
+    <Compile Remove="Migrations\20200313192939_addLanguagAndLanguagConfig.Designer.cs" />
+    <Compile Remove="Migrations\20200313193336_addLanguagAndLanguagConfig.cs" />
+    <Compile Remove="Migrations\20200313193336_addLanguagAndLanguagConfig.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

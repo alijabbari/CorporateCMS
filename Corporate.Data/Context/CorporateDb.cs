@@ -22,16 +22,20 @@ namespace Corporate.Data.Context
         public DbSet<Tag> Tags { get; set; }
         public DbSet<NewsCategoryMapping> NewsCategoryMappings { get; set; }
         public DbSet<ProductCategoryMapping> ProductCategoryMappings { get; set; }
-
+        public DbSet<Language> Languages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new ProductConfig());
+            modelBuilder?.ApplyConfiguration(new ProductConfig());
             modelBuilder.ApplyConfiguration(new CategoryConfig());
             modelBuilder.ApplyConfiguration(new NewsConfig());
             modelBuilder.ApplyConfiguration(new PictureConfig());
             modelBuilder.ApplyConfiguration(new TagConfig());
+            modelBuilder.ApplyConfiguration(new ProductCategoryMappingConfig());
+            modelBuilder.ApplyConfiguration(new ProductPictureMappingConfig());
             modelBuilder.ApplyConfiguration(new TopicConfig());
+            modelBuilder.ApplyConfiguration(new NewsCategoryMappingConfig());
+            modelBuilder.ApplyConfiguration(new LanguageConfig());
         }
     }
 }

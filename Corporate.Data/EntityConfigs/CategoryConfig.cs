@@ -17,6 +17,6 @@ namespace Corporate.Data.EntityConfigs
             builder.Property(x => x.ShortDescription).HasMaxLength(120).IsRequired(false);
             builder.HasMany(x => x.ParentCategory).WithOne().HasForeignKey(x => x.ParentId).IsRequired(false);
             builder.Property(x => x.ParentId).HasDefaultValue(0);
-        } 
+        }
     }
 }

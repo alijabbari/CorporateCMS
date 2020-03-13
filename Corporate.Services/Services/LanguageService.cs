@@ -7,12 +7,8 @@ using System.Text;
 
 namespace Corporate.Services.Services
 {
-    public class CategoryService : EFRepository<Category> ,ICategoryService
+    public class LanguageService : EFRepository<Language>, ILanguageService
     {
-        public CategoryService(CorporateDb corporateDb):base(corporateDb)
-        {
-
-        }
-
+        public LanguageService(CorporateDb corporateDb) : base(corporateDb) { }
     }
 }

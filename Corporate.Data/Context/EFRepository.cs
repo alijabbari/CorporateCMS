@@ -9,8 +9,8 @@ namespace Corporate.Data.Context
 {
     public class EFRepository<T> : IAsyncRepository<T> where T : class
     {
-        private readonly CorporateDb _dbContext;
-        private DbSet<T> _repository;
+        protected readonly CorporateDb _dbContext;
+        protected DbSet<T> _repository;
         public EFRepository(CorporateDb corporateDb)
         {
             _dbContext = corporateDb;

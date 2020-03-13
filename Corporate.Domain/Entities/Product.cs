@@ -7,10 +7,8 @@ namespace Corporate.Domain.Entities
     public class Product : BaseEntity
     {
         public Product()
-        {
-          //  Translates = new HashSet<TranslateEntity>();
+        {        
             ProductPictureMappings = new HashSet<ProductPictureMapping>();
-           
             ProductCategoryMappings = new HashSet<ProductCategoryMapping>();
         }
         public string Name { get; set; }
@@ -19,8 +17,8 @@ namespace Corporate.Domain.Entities
         public int Order { get; set; }
         //public string Stock { get; set; }
         //public ICollection<TranslateEntity> Translates { get; set; }
-        
-        public ICollection<ProductPictureMapping> ProductPictureMappings{ get; set; }
+
+        public ICollection<ProductPictureMapping> ProductPictureMappings { get; set; }
         public ICollection<ProductCategoryMapping> ProductCategoryMappings { get; set; }
 
     }

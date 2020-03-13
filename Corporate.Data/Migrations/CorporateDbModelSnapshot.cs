@@ -81,6 +81,41 @@ namespace Corporate.Data.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("Corporate.Domain.Entities.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Culture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(6)")
+                        .HasMaxLength(6);
+
+                    b.Property<bool>("Default")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(45)")
+                        .HasMaxLength(45);
+
+                    b.Property<bool>("Rtl")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SEOName")
+                        .HasColumnType("nvarchar(6)")
+                        .HasMaxLength(6);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
+                });
+
             modelBuilder.Entity("Corporate.Domain.Entities.News", b =>
                 {
                     b.Property<int>("Id")
@@ -289,12 +324,17 @@ namespace Corporate.Data.Migrations
                     b.Property<int>("PictureId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PictureId1")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PictureId");
+
+                    b.HasIndex("PictureId1");
 
                     b.HasIndex("ProductId");
 
@@ -453,10 +493,14 @@ namespace Corporate.Data.Migrations
             modelBuilder.Entity("Corporate.Domain.Entities.ProductPictureMapping", b =>
                 {
                     b.HasOne("Corporate.Domain.Entities.Picture", "Picture")
-                        .WithMany("ProductPictureMappings")
+                        .WithMany()
                         .HasForeignKey("PictureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Corporate.Domain.Entities.Picture", null)
+                        .WithMany("ProductPictureMappings")
+                        .HasForeignKey("PictureId1");
 
                     b.HasOne("Corporate.Domain.Entities.Product", "Product")
                         .WithMany("ProductPictureMappings")
