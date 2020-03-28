@@ -1,11 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Corporate.Data.Context;
 using Corporate.Infrastructure.ServiceCollectionExtention;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,16 +41,37 @@ namespace Corporate
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                //TODO:اینجا باید هندل کردن عمومی خطاها انجام بشه 
+                //app.UseExceptionHandler(ex =>
+                //{
+                //    ex.Run(async context =>
+                //    {
+                //    context.Response.StatusCode = 500;
+                //    context.Response.ContentType = "application/json";
+
+                //    var error = context.Features.Get<IExceptionHandlerFeature>();
+                //    if (error != null)
+                //    {
+                //        var ex = error.Error;
+
+                //        await context.Response.WriteAsync(new ErrorModel()
+                //        {
+                //            StatusCode = 500,
+                //            ErrorMessage = ex.Message
+                //        }.ToString()); //ToString() is overridden to Serialize object
+                //    });
+                //});
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
+            app.UseRouting();
+            app.UseCors("CorsPolicy");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -41,6 +41,12 @@ namespace Corporate.Data.Context
             return PagedList<T>.ToPagedList(items);
         }
 
+        public async Task<PagedList<T>> GetPagedAsync(int pageNumber, int pageSize)
+        {
+            var items = _repository.AsQueryable();
+            return await PagedList<T>.ToPagedList(items, pageNumber, pageSize).ConfigureAwait(false);
+        }
+
         public async Task UpdateAsync(T tEntity)
         {
             _dbContext.Entry(tEntity).State = EntityState.Modified;

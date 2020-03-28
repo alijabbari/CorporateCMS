@@ -10,9 +10,13 @@ using Corporate.Models;
 using Corporate.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Corporate.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    //[Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class LanguageController : ControllerBase
@@ -25,26 +29,65 @@ namespace Corporate.Areas.Admin.Controllers
             _languageService = languageService;
             _mapper = mapper;
         }
-
-        public async Task<IActionResult> GetAllLanguages(PageingDto pageingDto)
+        [HttpGet("Get")]
+        public async Task<IActionResult> GetLanguageById([FromQuery]int id)
         {
-            var pagedEntity = await _languageService.GetPagedAsync(pageingDto.CurrentPage, pageingDto.PageSize);
-            if (pagedEntity != null)
+            var entity = await _languageService.FindAsyncById(id);
+            if (entity != null)
             {
-                var languageDto = _mapper.Map<PagedList<Language>, PagedList<LanguageDto>>(pagedEntity);
+                var dto = _mapper.Map<LanguageDto>(entity);
+                return Ok(dto);
+            }
+            return NotFound();
+        }
+        [HttpGet("All")]
+
+        public async Task<IActionResult> GetAllLanguages([FromQuery]PageingDto pageingDto)
+        {
+
+            var pagedLanguage = await _languageService.GetPagedAsync(pageingDto.CurrentPage, pageingDto.PageSize);
+            if (pagedLanguage != null)
+            {
+
+                var languageDto = _mapper.Map<IEnumerable<LanguageDto>>(pagedLanguage);
+                pageingDto.TotalPages = pagedLanguage.TotalPages;
+                pageingDto.TotalCount = pagedLanguage.TotalCount;
+                pageingDto.CurrentPage = pagedLanguage.CurrentPage;
+                pageingDto.PageSize = pagedLanguage.PageSize;
+                Response.PagingHeader("X-Pagging", JsonSerializer.Serialize(pageingDto));
                 return Ok(languageDto);
             }
             return new NoContentResult();
         }
-        public async Task<IActionResult> AddLanguage(LanguageDto languageDto)
+        [HttpPost("Add")]
+        public async Task<IActionResult> AddLanguage([FromBody]LanguageDto languageDto)
         {
-            var entity = _mapper.Map<Language>(languageDto);
+            var entity = _mapper.Map<LanguageDto, Language>(languageDto);
             var addedEntity = await _languageService.AddAsync(entity);
-            if (addedEntity!=null)
+            if (addedEntity != null)
             {
                 return Ok(addedEntity);
             }
             return BadRequest();
+        }
+        [HttpPut("Edit")]
+        public async Task<IActionResult> Update([FromBody]LanguageDto languageDto)
+        {
+            var entity = await _languageService.FindAsyncById(languageDto.Id);
+            if (entity == null)
+            {
+                return NotFound("product for change not founded");
+            }
+            var updatedentity = _mapper.Map(languageDto, entity);
+            await _languageService.UpdateAsync(updatedentity);
+            return Ok(updatedentity);
+        }
+        [HttpDelete("Remove")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deletItem = await _languageService.FindAsyncById(id);
+            await _languageService.DeleteAsync(deletItem);
+            return Ok();
         }
     }
 }

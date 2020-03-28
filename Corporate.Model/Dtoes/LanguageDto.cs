@@ -7,6 +7,7 @@ namespace Corporate.Model.Dtoes
 {
     public class LanguageDto : BaseDto
     {
+
         [MaxLength(6)]
         public string Culture { get; set; }
         public bool Rtl { get; set; }

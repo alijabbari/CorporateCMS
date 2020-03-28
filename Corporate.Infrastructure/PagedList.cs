@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Corporate.Infrastructure
 {
@@ -24,7 +26,6 @@ namespace Corporate.Infrastructure
 
             AddRange(items);
         }
-
         public static PagedList<T> ToPagedList(IEnumerable<T> source, int pageNumber=1, int pageSize=10)
         {
             var count = source.Count();
@@ -32,10 +33,10 @@ namespace Corporate.Infrastructure
 
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
-        public static PagedList<T> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
+        public  static async Task<PagedList<T>> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
         {
             var count = source.Count();
-            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var items =await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
