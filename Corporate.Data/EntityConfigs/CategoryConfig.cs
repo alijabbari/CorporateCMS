@@ -12,6 +12,7 @@ namespace Corporate.Data.EntityConfigs
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder?.Property(x => x.Name).HasMaxLength(180).IsRequired();
+            builder?.HasIndex(x => x.Id);
             builder.Property(x => x.Metakeword).HasMaxLength(300).IsRequired(false);
             builder.Property(x => x.MetaDescription).HasMaxLength(300).IsRequired(false);
             builder.Property(x => x.ShortDescription).HasMaxLength(120).IsRequired(false);

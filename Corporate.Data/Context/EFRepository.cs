@@ -11,6 +11,10 @@ namespace Corporate.Data.Context
     {
         protected readonly CorporateDb _dbContext;
         protected DbSet<T> _repository;
+        public EFRepository()
+        {
+
+        }
         public EFRepository(CorporateDb corporateDb)
         {
             _dbContext = corporateDb;

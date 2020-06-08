@@ -19,10 +19,10 @@ namespace Corporate.Domain.Entities
         public string Metakeword { get; set; }
         public string MetaDescription { get; set; }
         public int PictureId { get; set; }
-        public int ParentId { get; set; }
         public Picture Picture { get; set; }
+        public int ParentId { get; set; }
         public ICollection<Category> ParentCategory { get; set; }
-        public ICollection<NewsCategoryMapping> NewsCategoryMappings { get; set; }       
+        public ICollection<NewsCategoryMapping> NewsCategoryMappings { get; set; }
         public ICollection<ProductCategoryMapping> ProductCategoryMappings { get; set; }
     }
 }

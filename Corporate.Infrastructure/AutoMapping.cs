@@ -17,6 +17,7 @@ namespace Corporate.Infrastructure
             CreateMap<LanguageDto, Language>();
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
+            CreateMap<User, UserDto>().ReverseMap();
 
         }
     }

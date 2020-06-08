@@ -42,7 +42,7 @@ namespace Corporate.Areas.Admin.Controllers
         }
         [HttpGet("All")]
 
-        public async Task<IActionResult> GetAllLanguages([FromQuery]PageingDto pageingDto)
+        public async Task<ActionResult> GetAllLanguages([FromQuery]PageingDto pageingDto)
         {
 
             var pagedLanguage = await _languageService.GetPagedAsync(pageingDto.CurrentPage, pageingDto.PageSize);
@@ -54,7 +54,7 @@ namespace Corporate.Areas.Admin.Controllers
                 pageingDto.TotalCount = pagedLanguage.TotalCount;
                 pageingDto.CurrentPage = pagedLanguage.CurrentPage;
                 pageingDto.PageSize = pagedLanguage.PageSize;
-                Response.PagingHeader("X-Pagging", JsonSerializer.Serialize(pageingDto));
+                Response.PagingHeader("Pagination", pageingDto);
                 return Ok(languageDto);
             }
             return new NoContentResult();
@@ -86,8 +86,9 @@ namespace Corporate.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var deletItem = await _languageService.FindAsyncById(id);
+            if (deletItem == null) return BadRequest();
             await _languageService.DeleteAsync(deletItem);
-            return Ok();
+            return Ok(200);
         }
     }
 }
