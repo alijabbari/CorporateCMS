@@ -24,16 +24,16 @@ namespace Corporate.Services.Services
 
         }
 
-        public async Task<List<User>> FindUsersInRoleAsync(string roleName)
-        {
-            var roleUserIdsQuery = from role in _repository
-                                   where role.Name == roleName
-                                   from user in role.UserRoles
-                                   select user.UserId;
-            return await _dbContext.Users.Where(user => roleUserIdsQuery.Contains(user.Id))
-                         .ToListAsync();
+        //public async Task<List<User>> FindUsersInRoleAsync(string roleName)
+        //{
+        //    var roleUserIdsQuery = from role in _repository
+        //                           where role.Name == roleName
+        //                           from user in role.UserRoles
+        //                           select user.UserId;
+        //    return await _dbContext.Users.Where(user => roleUserIdsQuery.Contains(user.Id))
+        //                 .ToListAsync();
 
-        }
+        //}
 
         public async Task<bool> IsUserInRoleAsync(int userId, string roleName)
         {

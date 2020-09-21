@@ -8,6 +8,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,8 +48,8 @@ namespace Corporate.Infrastructure.ServiceCollectionExtention
             service.AddScoped<ICategoryService, CategoryService>();
 
             service.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
-            
+
+
             service.AddScoped<IUsersService, UsersService>();
             service.AddScoped<IRoleService, RoleService>();
             service.AddSingleton<ISecurityService, SecurityService>();
@@ -97,8 +98,22 @@ namespace Corporate.Infrastructure.ServiceCollectionExtention
         }
         public static void JsonSetting(this IServiceCollection services)
         {
-            services.AddControllers()
-        .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true).ConfigureApiBehaviorOptions(op => op.SuppressInferBindingSourcesForParameters = true);
+            //services.AddControllers()
+            services.AddControllers(options =>
+            {
+                // remove formatter that turns nulls into 204 - No Content responses
+                // this formatter breaks SPA's Http response JSON parsing
+                options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
+                options.OutputFormatters.Insert(0, new HttpNoContentOutputFormatter
+                {
+                    TreatNullValueAsNoContent = false
+                });
+            }).AddJsonOptions
+            (
+                options => options.JsonSerializerOptions.WriteIndented = true
+            ).ConfigureApiBehaviorOptions(
+                op => op.SuppressInferBindingSourcesForParameters = true
+            );
         }
 
         public static void JWTAuthSecurityHandler(this IServiceCollection services, IConfiguration configuration)

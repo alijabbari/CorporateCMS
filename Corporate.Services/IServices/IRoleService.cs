@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Corporate.Services.IServices
 {
-    public interface IRoleService :IAsyncRepository<Role>
+    public interface IRoleService //:IAsyncRepository<Role>
     {
         Task<List<Role>> FindUserRolesAsync(int userId);
         Task<bool> IsUserInRoleAsync(int userId, string roleName);
-        Task<List<User>> FindUsersInRoleAsync(string roleName);
+        //Task<List<User>> FindUsersInRoleAsync(string roleName);
     }
 }

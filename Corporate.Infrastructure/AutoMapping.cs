@@ -18,6 +18,7 @@ namespace Corporate.Infrastructure
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<Picture, PictureDto>().ReverseMap();
 
         }
     }

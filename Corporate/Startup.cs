@@ -32,12 +32,12 @@ namespace Corporate
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
-            using (var scope = scopeFactory.CreateScope())
-            {
-                var dbInitializer = scope.ServiceProvider.GetService<IDbInitializerService>();
-                dbInitializer.Initialize();
-                dbInitializer.SeedData();
-            }
+            //using (var scope = scopeFactory.CreateScope())
+            //{
+            //    var dbInitializer = scope.ServiceProvider.GetService<IDbInitializerService>();
+            //    dbInitializer.Initialize();
+            //    dbInitializer.SeedData();
+            //}
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -93,8 +93,10 @@ namespace Corporate
                         context.Response.ContentType = "application/json";
                         await context.Response.WriteAsync(JsonSerializer.Serialize(new
                         {
-                            State = 500,
-                            Msg = error.Error.Message
+                            error=error
+                            //State = 500,
+                            //Msg = error.Error.Message,
+                            //InnerException=error.Error.InnerException.Message
                         }));
                     }
                     else

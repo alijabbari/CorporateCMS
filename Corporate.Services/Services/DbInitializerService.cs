@@ -43,34 +43,34 @@ namespace Corporate.Services.Services
                 using (var context = serviceScope.ServiceProvider.GetService<CorporateDb>())
                 {
                     // Add default roles
-                    var adminRole = new Role { Name = CustomRoles.Admin };
-                    var userRole = new Role { Name = CustomRoles.User };
-                    if (!context.Roles.Any())
-                    {
-                        context.Add(adminRole);
-                        context.Add(userRole);
-                        context.SaveChanges();
-                    }
+                    //var adminRole = new Role { Name = CustomRoles.Admin };
+                    //var userRole = new Role { Name = CustomRoles.User };
+                    //if (!context.Roles.Any())
+                    //{
+                    //    context.Add(adminRole);
+                    //    context.Add(userRole);
+                    //    context.SaveChanges();
+                    //}
 
-                    // Add Admin user
-                    if (!context.Users.Any())
-                    {
-                        var adminUser = new User
-                        {
-                            Username = "ali",
-                            DisplayName = "علی",
-                            IsActive = true,
-                            LastLoggedIn = null,
-                            Password = _securityService.GetSha256Hash("1234"),
-                            SerialNumber = Guid.NewGuid().ToString("N")
-                        };
-                        context.Add(adminUser);
-                        context.SaveChanges();
+                    //// Add Admin user
+                    //if (!context.Users.Any())
+                    //{
+                    //    var adminUser = new User
+                    //    {
+                    //        Username = "ali",
+                    //        DisplayName = "علی",
+                    //        IsActive = true,
+                    //        LastLoggedIn = null,
+                    //        Password = _securityService.GetSha256Hash("1234"),
+                    //        SerialNumber = Guid.NewGuid().ToString("N")
+                    //    };
+                    //    context.Add(adminUser);
+                    //    context.SaveChanges();
 
-                        context.Add(new UserRole { Roles = adminRole, Users = adminUser });
-                        context.Add(new UserRole { Roles = userRole, Users = adminUser });
-                        context.SaveChanges();
-                    }
+                    //    context.Add(new UserRole { Roles = adminRole, Users = adminUser });
+                    //    context.Add(new UserRole { Roles = userRole, Users = adminUser });
+                    //    context.SaveChanges();
+                    //}
                 }
             }
         }

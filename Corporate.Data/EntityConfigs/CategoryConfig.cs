@@ -11,13 +11,16 @@ namespace Corporate.Data.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder?.Property(x => x.Name).HasMaxLength(180).IsRequired();
-            builder?.HasIndex(x => x.Id);
+            builder?.HasKey(x => x.Id);
+            builder.HasIndex(x => x.ParentId);
+            builder.Property(x => x.PictureId).HasDefaultValue(0);
+            builder.Property(x => x.Name).HasMaxLength(180).IsRequired();
             builder.Property(x => x.Metakeword).HasMaxLength(300).IsRequired(false);
             builder.Property(x => x.MetaDescription).HasMaxLength(300).IsRequired(false);
             builder.Property(x => x.ShortDescription).HasMaxLength(120).IsRequired(false);
-            builder.HasMany(x => x.ParentCategory).WithOne().HasForeignKey(x => x.ParentId).IsRequired(false);
-            builder.Property(x => x.ParentId).HasDefaultValue(0);
+            builder.HasOne(x => x.Parent).WithMany(x=>x.SubCategory).HasForeignKey(x => x.ParentId);
+            //builder.Property(x => x.ParentId).HasDefaultValue(0);
+
         }
     }
 }

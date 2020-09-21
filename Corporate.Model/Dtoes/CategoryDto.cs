@@ -13,5 +13,6 @@ namespace Corporate.Model.Dtoes
         public bool IncludeInTopMenu { get; set; }
         public string Metakeword { get; set; }
         public string MetaDescription { get; set; }
+        
     }
 }

@@ -10,7 +10,7 @@ namespace Corporate.Data.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<NewsCategoryMapping> builder)
         {
-            builder.HasOne(x => x.Category).WithMany(x => x.NewsCategoryMappings).HasForeignKey(x => x.CategoryId);
+            //builder.HasOne(x => x.Category).WithMany(x => x.NewsCategoryMappings).HasForeignKey(x => x.CategoryId);
             builder.HasOne(x => x.News).WithMany(x => x.NewsCategoryMappings).HasForeignKey(x => x.NewsId);
 
         }

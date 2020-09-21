@@ -11,7 +11,7 @@ namespace Corporate.Services.IServices
     public interface ICategoryService :IAsyncRepository<Category>
     {
 
-        //Task<PagedList<Category>> GetTopMenuCategories();
+        Task<List<Category>> GetTopMenuCategories();
 
     }
 }

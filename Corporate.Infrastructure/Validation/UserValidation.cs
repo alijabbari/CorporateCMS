@@ -10,10 +10,10 @@ namespace Corporate.Infrastructure.Validation
     {
         public UserValidation()
         {
-            RuleFor(r => r.Email).EmailAddress();
+            RuleFor(r => r.Email).EmailAddress().NotNull().WithMessage($"ایمیل بایدمقدار دهی شود");
             RuleFor(r => r.SerialNumber).MaximumLength(450);
             RuleFor(r => r.Username).MaximumLength(450);
-            RuleFor(r => r.Password).MaximumLength(450);
+            RuleFor(r => r.Password).MaximumLength(450);           
         }
     }
 }

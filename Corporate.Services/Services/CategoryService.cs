@@ -1,9 +1,13 @@
 ﻿using Corporate.Data.Context;
 using Corporate.Domain.Entities;
+using Corporate.Infrastructure;
 using Corporate.Services.IServices;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Corporate.Services.Services
 {
@@ -14,5 +18,9 @@ namespace Corporate.Services.Services
 
         }
 
+        public async  Task<List<Category>> GetTopMenuCategories()
+        {
+            return await _repository.Where(x=>x.IncludeInTopMenu==true).ToListAsync();
+        }
     }
 }
