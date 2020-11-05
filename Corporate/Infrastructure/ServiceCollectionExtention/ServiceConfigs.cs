@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Corporate.Data.Context;
 using Corporate.Domain.Entities;
+using Corporate.Infrastructure.FileHelper;
 using Corporate.Infrastructure.Validation;
+using Corporate.Model.Dtoes;
 using Corporate.Services.IServices;
 using Corporate.Services.Services;
 using FluentValidation;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using SixLabors.ImageSharp.Web.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +30,7 @@ namespace Corporate.Infrastructure.ServiceCollectionExtention
 
         public static void ReegisterAllServices(IServiceCollection service, IConfiguration configuration)
         {
-            service.AddMvc().AddFluentValidation();
+            service.RegisterValidatore();            
             service.ConfigureCors();
             service.ConfigServicesDependencies();
             service.ConfigServiceDatabaseContext(configuration);
@@ -35,7 +38,6 @@ namespace Corporate.Infrastructure.ServiceCollectionExtention
             service.JsonSetting();
             service.JWTAuthSecurityHandler(configuration);
             service.AddCustomOptions(configuration);
-            service.RegisterValidatore();
         }
 
         #region Extentions
@@ -46,6 +48,7 @@ namespace Corporate.Infrastructure.ServiceCollectionExtention
             service.AddScoped<IProductService, ProductService>();
             service.AddScoped<ILanguageService, LanguageService>();
             service.AddScoped<ICategoryService, CategoryService>();
+            service.AddScoped<IFileUploadService, FileUploadService>();
 
             service.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -73,6 +76,7 @@ namespace Corporate.Infrastructure.ServiceCollectionExtention
 
             IMapper mapper = mappingConfig.CreateMapper();
             service.AddSingleton(mapper);
+            service.AddImageSharp();
         }
 
         public static void ConfigureCors(this IServiceCollection services)
@@ -95,6 +99,9 @@ namespace Corporate.Infrastructure.ServiceCollectionExtention
         public static void RegisterValidatore(this IServiceCollection services)
         {
             services.AddTransient<IValidator<User>, UserValidation>();
+            services.AddTransient<IValidator<CategoryDto>, CategoryValidation>();
+            services.AddTransient<IValidator<PictureDto>, PictureValidation>();
+            services.AddControllersWithViews().AddFluentValidation();
         }
         public static void JsonSetting(this IServiceCollection services)
         {

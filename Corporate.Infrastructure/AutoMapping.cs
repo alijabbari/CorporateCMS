@@ -16,9 +16,10 @@ namespace Corporate.Infrastructure
             CreateMap<Language, LanguageDto>();
             CreateMap<LanguageDto, Language>();
             CreateMap<Category, CategoryDto>();
-            CreateMap<CategoryDto, Category>();
+            CreateMap<CategoryDto, Category>().ForMember(x=>x.CreationDateTime,op=>op.NullSubstitute(DateTimeOffset.UtcNow));
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Picture, PictureDto>().ReverseMap();
+            CreateMap (typeof(PagedList<>), typeof(PageingDto)).ReverseMap();
 
         }
     }

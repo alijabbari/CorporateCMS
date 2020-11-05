@@ -1,4 +1,5 @@
-﻿using Corporate.Models;
+﻿using Corporate.Model.Dtoes;
+using Corporate.Models;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

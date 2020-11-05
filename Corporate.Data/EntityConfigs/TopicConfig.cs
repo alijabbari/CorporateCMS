@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Corporate.Data.EntityConfigs
 {
-    class TopicConfig : IEntityTypeConfiguration<Topic>
+    public class TopicConfig : IEntityTypeConfiguration<Topic>
     {
         public void Configure(EntityTypeBuilder<Topic> builder)
         {

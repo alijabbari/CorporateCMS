@@ -7,7 +7,7 @@ namespace Corporate.Domain.Entities
     public class Product : BaseEntity
     {
         public Product()
-        {        
+        {
             ProductPictureMappings = new HashSet<ProductPictureMapping>();
             ProductCategoryMappings = new HashSet<ProductCategoryMapping>();
         }
@@ -15,6 +15,9 @@ namespace Corporate.Domain.Entities
         public string Description { get; set; }
         public string ShortDescription { get; set; }
         public int Order { get; set; }
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+
         //public string Stock { get; set; }
         //public ICollection<TranslateEntity> Translates { get; set; }
 

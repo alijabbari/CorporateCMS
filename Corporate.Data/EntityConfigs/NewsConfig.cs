@@ -11,7 +11,7 @@ namespace Corporate.Data.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<News> builder)
         {
-            builder.Property(x => x.Title).HasMaxLength(200).IsRequired();
+            builder?.Property(x => x.Title).HasMaxLength(200).IsRequired();
             builder.Property(x => x.ShortDescription).HasMaxLength(120).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(4000);
             builder.Property(x => x.SourceAddress).HasMaxLength(400);

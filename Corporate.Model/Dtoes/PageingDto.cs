@@ -1,11 +1,10 @@
 ﻿using Corporate.Model.Dtoes;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Corporate.Models
+namespace Corporate.Model.Dtoes
 {
 
     public class PageingDto

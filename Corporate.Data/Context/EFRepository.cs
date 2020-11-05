@@ -1,4 +1,5 @@
-﻿using Corporate.Infrastructure;
+﻿using Corporate.Domain.Entities;
+using Corporate.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Corporate.Data.Context
 {
-    public class EFRepository<T> : IAsyncRepository<T> where T : class
+    public class EFRepository<T> : IAsyncRepository<T> where T : BaseEntity
     {
         protected readonly CorporateDb _dbContext;
         protected DbSet<T> _repository;
@@ -27,11 +28,15 @@ namespace Corporate.Data.Context
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
             return tEntity;
         }
-
-        public async Task DeleteAsync(T tEntity)
+        /// <summary>
+        /// for delete row physicaly not logical
+        /// </summary>
+        /// <param name="tEntity"></param>
+        /// <returns></returns>
+        public async Task<int> PhysicalDeleteAsync(T tEntity)
         {
             _repository.Remove(tEntity);
-            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+            return await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task<T> FindAsyncById(int id)
@@ -41,7 +46,7 @@ namespace Corporate.Data.Context
 
         public async Task<PagedList<T>> GetPagedAsync()
         {
-            var items = await _repository.ToListAsync().ConfigureAwait(false);
+            var items = await _repository.AsNoTracking().ToListAsync().ConfigureAwait(false);
             return PagedList<T>.ToPagedList(items);
         }
 
@@ -56,6 +61,13 @@ namespace Corporate.Data.Context
             _dbContext.Entry(tEntity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
+        }
+
+        public async Task<int> LogincalDeleteAsync(T tEntity)
+        {
+            tEntity.IsDeleted = true;
+            tEntity.DeletedDateTime = DateTimeOffset.UtcNow;
+            return await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

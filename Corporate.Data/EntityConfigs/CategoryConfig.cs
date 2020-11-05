@@ -12,14 +12,20 @@ namespace Corporate.Data.EntityConfigs
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder?.HasKey(x => x.Id);
-            builder.HasIndex(x => x.ParentId);
+            builder.HasIndex(x => x.ParentId).HasName("IX_ParentId");
+            builder.HasIndex(x => x.Id).HasName("IX_CategoryId");
             builder.Property(x => x.PictureId).HasDefaultValue(0);
             builder.Property(x => x.Name).HasMaxLength(180).IsRequired();
             builder.Property(x => x.Metakeword).HasMaxLength(300).IsRequired(false);
             builder.Property(x => x.MetaDescription).HasMaxLength(300).IsRequired(false);
             builder.Property(x => x.ShortDescription).HasMaxLength(120).IsRequired(false);
-            builder.HasOne(x => x.Parent).WithMany(x=>x.SubCategory).HasForeignKey(x => x.ParentId);
+            builder.Property(x => x.CreationDateTime).HasDefaultValue(DateTimeOffset.UtcNow);
+            builder.Property(x => x.CreationDateTime).HasDefaultValue(DateTimeOffset.UtcNow);
+
+            builder.HasMany(x => x.ProductCategoryMappings).WithOne(x => x.Categories).HasForeignKey(x => x.CategoryId);
             //builder.Property(x => x.ParentId).HasDefaultValue(0);
+
+
 
         }
     }

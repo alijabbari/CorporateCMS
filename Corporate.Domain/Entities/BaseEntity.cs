@@ -8,7 +8,7 @@ namespace Corporate.Domain.Entities
     {
         public int Id { get; set; }
         public bool IsPublished { get; set; }
-        public DateTimeOffset? CreationDateTime { get; set; }
+        public DateTimeOffset? CreationDateTime { get; set; } = DateTimeOffset.UtcNow;
         public DateTimeOffset? DeletedDateTime { get; set; }
         public DateTimeOffset? EditeDateTime { get; set; }
         public bool IsDeleted { get; set; }

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Corporate.Domain.Entities;
 using Corporate.Infrastructure;
+using Corporate.Infrastructure.CustomeApiRespone;
+using Corporate.Infrastructure.CustomeApiResponse;
 using Corporate.Model.Dtoes;
 using Corporate.Models;
 using Corporate.Services.IServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Corporate.Areas.Admin.Controllers
@@ -16,7 +16,7 @@ namespace Corporate.Areas.Admin.Controllers
     [Area("Admin")]
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
         public readonly IMapper _mapper;
@@ -26,42 +26,69 @@ namespace Corporate.Areas.Admin.Controllers
             _mapper = mapper;
         }
         [HttpPost("insert")]
-        public async Task<ActionResult<CategoryDto>> AddCategory([FromBody] CategoryDto categoryDto)
+        public async Task<IActionResult> AddCategoryAsync([FromBody] CategoryDto categoryDto)
         {
             var category = _mapper.Map<CategoryDto, Category>(categoryDto);
             if (category != null)
             {
                 await _categoryService.AddAsync(category);
-                return Ok(categoryDto);
+                return Ok(new OkApiResponse(categoryDto));
             }
-            return BadRequest();
+            return BadRequest(new BadRequestApiResponse());
         }
-        public async Task<ActionResult<CategoryDto>> GetById(int id)
+        [HttpGet("Get")]
+        public async Task<IActionResult> GetById(int id)
         {
             var category = await _categoryService.FindAsyncById(id);
             if (category == null)
             {
-                return NotFound();
+                return NotFound(new ApiResponse(404));
             }
             var categoryDto = _mapper.Map<CategoryDto>(category);
             return Ok(categoryDto);
         }
-        public async Task<ActionResult> GetList([FromQuery]PageingDto pageingDto)
+        [HttpGet("list")]
+        public async Task<IActionResult> List([FromBody] PageingDto pageingDto)
         {
             var pagedCategory = await _categoryService.GetPagedAsync(pageingDto.CurrentPage, pageingDto.PageSize);
             if (pagedCategory != null)
             {
 
                 var categoryListDto = _mapper.Map<IEnumerable<CategoryDto>>(pagedCategory);
-                pageingDto.TotalPages = pagedCategory.TotalPages;
-                pageingDto.TotalCount = pagedCategory.TotalCount;
-                pageingDto.CurrentPage = pagedCategory.CurrentPage;
-                pageingDto.PageSize = pagedCategory.PageSize;
-                Response.PagingHeader("Pagination", pageingDto);
-                return Ok(categoryListDto);
+                var Pagination = _mapper.Map<PageingDto>(pagedCategory);
+                Response.PagingHeader("Pagination", Pagination);
+                return Ok(new OkApiResponse(categoryListDto));
             }
-            return new NoContentResult();
+            return NotFound(new ApiResponse(404));
 
+        }
+        [HttpPut("Edit")]
+        public async Task<IActionResult> Update([FromBody] CategoryDto categoryDto)
+        {
+            var existCategory = await _categoryService.FindAsyncById(categoryDto.Id);
+            if (existCategory != null)
+            {
+                var categoryMapped = _mapper.Map(categoryDto, existCategory);
+                categoryMapped.EditeDateTime = DateTimeOffset.UtcNow;
+                await _categoryService.UpdateAsync(categoryMapped);
+                return Ok(new OkApiResponse(categoryDto));
+            }
+            return NotFound(new ApiResponse(404));
+        }
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var existCategory = await _categoryService.FindAsyncById(id);
+            if (existCategory == null)
+            {
+                return NotFound(new ApiResponse(204));
+            }
+            var categoryMapped = _mapper.Map<Category>(existCategory);
+            categoryMapped.IsDeleted = true;
+            categoryMapped.DeletedDateTime = DateTimeOffset.UtcNow;
+            await _categoryService.UpdateAsync(categoryMapped);
+
+            return Ok(new ApiResponse(200));
         }
     }
 }

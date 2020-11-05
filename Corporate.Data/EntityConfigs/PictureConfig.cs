@@ -11,7 +11,8 @@ namespace Corporate.Data.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<Picture> builder)
         {
-            builder?.HasKey(x => x.Id);           
+            builder?.HasKey(x => x.Id);
+            builder.HasIndex(x => x.Id).HasName("IX_PictureId");
             builder.Property(x => x.Alternate).HasMaxLength(50);
             builder.Property(x => x.SeoName).HasMaxLength(200);
             builder.Property(x => x.Src).HasMaxLength(200);

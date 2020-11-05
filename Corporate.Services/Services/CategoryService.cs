@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace Corporate.Services.Services
 {
-    public class CategoryService : EFRepository<Category> ,ICategoryService
+    public class CategoryService : EFRepository<Category>, ICategoryService
     {
-        public CategoryService(CorporateDb corporateDb):base(corporateDb)
+        public CategoryService(CorporateDb corporateDb) : base(corporateDb)
         {
 
         }
 
-        public async  Task<List<Category>> GetTopMenuCategories()
+        public async Task<List<Category>> GetTopMenuCategories()
         {
-            return await _repository.Where(x=>x.IncludeInTopMenu==true).ToListAsync();
+            return await _repository.Where(x => x.IncludeInTopMenu == true && x.IsDeleted == false).AsNoTracking().ToListAsync();
         }
     }
 }

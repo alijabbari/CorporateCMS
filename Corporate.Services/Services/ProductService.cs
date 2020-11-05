@@ -9,9 +9,13 @@ namespace Corporate.Services.Services
 {
     public class ProductService : EFRepository<Product>, IProductService
     {
-        public ProductService(CorporateDb corporateDb) : base(corporateDb)
-        {
+        //public ProductService(CorporateDb corporateDb) : base(corporateDb)
+        //{
 
+        //}
+        public ProductService()
+        {
+            
         }
 
     }

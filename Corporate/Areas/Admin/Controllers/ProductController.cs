@@ -74,7 +74,7 @@ namespace Corporate.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var deleteEntity = await _productService.FindAsyncById(id);
-            await _productService.DeleteAsync(deleteEntity);
+            await _productService.PhysicalDeleteAsync(deleteEntity);
             return Ok();
         }
     }

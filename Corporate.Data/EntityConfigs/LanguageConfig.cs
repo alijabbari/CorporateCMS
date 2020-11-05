@@ -11,7 +11,7 @@ namespace Corporate.Data.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<Language> builder)
         {
-            builder.HasKey(l => l.Id);
+            builder?.HasKey(l => l.Id);
             builder.Property(l => l.Culture).HasMaxLength(6).IsRequired();
             builder.Property(l => l.Name).HasMaxLength(45).IsRequired();
             builder.Property(l => l.SEOName).HasMaxLength(6).IsRequired(false);

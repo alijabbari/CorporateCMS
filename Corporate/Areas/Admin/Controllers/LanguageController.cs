@@ -87,7 +87,7 @@ namespace Corporate.Areas.Admin.Controllers
         {
             var deletItem = await _languageService.FindAsyncById(id);
             if (deletItem == null) return BadRequest();
-            await _languageService.DeleteAsync(deletItem);
+            await _languageService.PhysicalDeleteAsync(deletItem);
             return Ok(200);
         }
     }

@@ -9,7 +9,7 @@ namespace Corporate.Domain.Entities
         public Category()
         {
 
-            SubCategory = new HashSet<Category>();
+            // SubCategory = new HashSet<Category>();
             //ProductCategoryMappings = new HashSet<ProductCategoryMapping>();
 
         }
@@ -22,10 +22,10 @@ namespace Corporate.Domain.Entities
         public int? PictureId { get; set; }
         //public Picture Picture { get; set; }
         public int? ParentId { get; set; }
-        
-        public Category Parent { get; set; }
-        public ICollection<Category> SubCategory { get; set; }
+
+        // public Category Parent { get; set; }
+        //public ICollection<Category> SubCategory { get; set; }
         //public ICollection<NewsCategoryMapping> NewsCategoryMappings { get; set; }
-        //public ICollection<ProductCategoryMapping> ProductCategoryMappings { get; set; }
+        public ICollection<ProductCategoryMapping> ProductCategoryMappings { get; set; }
     }
 }

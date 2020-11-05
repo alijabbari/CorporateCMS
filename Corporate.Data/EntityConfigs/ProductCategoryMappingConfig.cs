@@ -11,8 +11,9 @@ namespace Corporate.Data.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<ProductCategoryMapping> builder)
         {
-            builder?.HasKey(x => x.Id);            
-            //builder.HasOne(x => x.Categories).WithMany(x => x.ProductCategoryMappings).HasForeignKey(x => x.CategoryId);
+            builder?.HasKey(x => new { x.Id, x.CategoryId, x.ProductId });
+
+            builder.HasOne(x => x.Categories).WithMany(x => x.ProductCategoryMappings).HasForeignKey(x => x.CategoryId);
             builder.HasOne(x => x.Products).WithMany(x => x.ProductCategoryMappings).HasForeignKey(x => x.ProductId);
 
         }

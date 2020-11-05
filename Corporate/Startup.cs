@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Corporate.Infrastructure.CustomeApiRespone;
 using Corporate.Infrastructure.ServiceCollectionExtention;
 using Corporate.Services.IServices;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using SixLabors.ImageSharp.Web.DependencyInjection;
 
 namespace Corporate
 {
@@ -25,13 +27,14 @@ namespace Corporate
         public void ConfigureServices(IServiceCollection services)
         {
             ServiceConfigs.ReegisterAllServices(services, Configuration);
-            services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+           
             //using (var scope = scopeFactory.CreateScope())
             //{
             //    var dbInitializer = scope.ServiceProvider.GetService<IDbInitializerService>();
@@ -67,56 +70,57 @@ namespace Corporate
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 //app.UseHsts();
             }
-            app.UseStatusCodePages();
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
+            app.UseExceptionHandler("/errors/500");
             app.UseRouting();
-
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
+           
 
-            app.UseExceptionHandler(appBuilder =>
-            {
-                appBuilder.Use(async (context, next) =>
-                {
-                    var error = context.Features[typeof(IExceptionHandlerFeature)] as IExceptionHandlerFeature;
-                    if (error?.Error is SecurityTokenExpiredException)
-                    {
-                        context.Response.StatusCode = 401;
-                        context.Response.ContentType = "application/json";
-                        await context.Response.WriteAsync(JsonSerializer.Serialize(new
-                        {
-                            State = 401,
-                            Msg = "token expired"
-                        }));
-                    }
-                    else if (error?.Error != null)
-                    {
-                        context.Response.StatusCode = 500;
-                        context.Response.ContentType = "application/json";
-                        await context.Response.WriteAsync(JsonSerializer.Serialize(new
-                        {
-                            error=error
-                            //State = 500,
-                            //Msg = error.Error.Message,
-                            //InnerException=error.Error.InnerException.Message
-                        }));
-                    }
-                    else
-                    {
-                        await next();
-                    }
-                });
-            });
+            //app.UseExceptionHandler(appBuilder =>
+            //{
+            //    appBuilder.Use(async (context, next) =>
+            //    {
+            //        var error = context.Features[typeof(IExceptionHandlerFeature)] as IExceptionHandlerFeature;
+            //        if (error?.Error is SecurityTokenExpiredException)
+            //        {
+            //            context.Response.StatusCode = 401;
+            //            context.Response.ContentType = "application/json";
+            //            await context.Response.WriteAsync(JsonSerializer.Serialize(new
+            //            {
+            //                State = 401,
+            //                Msg = "token expired"
+            //            }));
+            //        }
+            //        else if (error?.Error != null)
+            //        {
+            //            context.Response.StatusCode = 500;
+            //            context.Response.ContentType = "application/json";
+            //            await context.Response.WriteAsync(JsonSerializer.Serialize(new ApiResponse(
+            //                context.Response.StatusCode
+            //                )
+            //            ));
+            //        }
+            //        else
+            //        {
+            //            await next();
+            //        }
+            //    });
+            //});
             app.UseAuthentication();
             app.UseCors("http://localhost:4200");
             app.UseAuthorization();
-            //app.UseStaticFiles();
+            app.UseImageSharp();
+
             app.UseEndpoints(endpoints =>
                         {
                             endpoints.MapControllerRoute(
+                               name: "default",
+                               pattern: "{controller=Home}/{action=Index}/{id?}");
+                            endpoints.MapControllerRoute(
                                 name: "Admin",
                                 pattern: "{area:exists}/{Controller=Home}/{action=Index}/{id?}");
-                            endpoints.MapControllerRoute(
-                                name: "default",
-                                pattern: "{controller=Home}/{action=Index}/{id?}");
+
                         });
         }
     }

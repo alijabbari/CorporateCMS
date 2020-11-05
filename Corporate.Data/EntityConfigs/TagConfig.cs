@@ -11,7 +11,7 @@ namespace Corporate.Data.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<Tag> builder)
         {
-            builder.Property(x => x.EntityName).HasMaxLength(50);
+            builder?.Property(x => x.EntityName).HasMaxLength(50);
             builder.Property(x => x.TagName).HasMaxLength(150);
         }
     }
